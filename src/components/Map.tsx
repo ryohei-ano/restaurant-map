@@ -97,16 +97,30 @@ export default function Map() {
           attribution='&copy; <a href="https://carto.com/">CARTO</a>'
         />
         
-        {restaurants.map((restaurant) => (
-          <Marker
-            key={restaurant.id}
-            position={[restaurant.latitude || 35.6895, restaurant.longitude || 139.6917]}
-            icon={createCustomIcon(restaurant.category)}
-            eventHandlers={{
-              click: () => handleMarkerClick(restaurant)
-            }}
-          />
-        ))}
+        {restaurants.map((restaurant) => {
+          // Google MapのURLから座標を抽出するか、デフォルト値を使用
+          let lat = 35.6895; // 東京のデフォルト緯度
+          let lng = 139.6917; // 東京のデフォルト経度
+          
+          if (restaurant.google_map_url) {
+            const match = restaurant.google_map_url.match(/q=([0-9.-]+),([0-9.-]+)/);
+            if (match) {
+              lat = parseFloat(match[1]);
+              lng = parseFloat(match[2]);
+            }
+          }
+          
+          return (
+            <Marker
+              key={restaurant.id}
+              position={[lat, lng]}
+              icon={createCustomIcon(restaurant.category)}
+              eventHandlers={{
+                click: () => handleMarkerClick(restaurant)
+              }}
+            />
+          );
+        })}
       </MapContainer>
       
       <RestaurantResponsiveModal

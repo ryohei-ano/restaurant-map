@@ -2,7 +2,17 @@
 
 import { useState } from 'react'
 import { ThumbsUp, MapPin } from 'lucide-react'
-import { Restaurant, Reaction } from '@/types/map'
+import { Restaurant, Reaction, Category } from '@/types/map'
+
+// カテゴリに対応する絵文字を取得する関数
+const getCategoryEmoji = (category: Category): string => {
+  const emojiMap = {
+    spicy: '🌶️',
+    oily: '🍟',
+    sweet: '🍰'
+  }
+  return emojiMap[category] || '🍽️'
+}
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { Button } from '@/components/ui/button'
 import {
@@ -78,26 +88,34 @@ export default function RestaurantResponsiveModal({
           </div>
 
           {/* 電話番号 */}
-          {restaurant.phone && (
-            <div className="flex items-center space-x-2">
-              <span className="text-sm font-medium text-gray-700">電話:</span>
-              <span className="text-gray-600">{restaurant.phone}</span>
-            </div>
-          )}
+          <div className="flex items-center space-x-2">
+            <span className="text-sm font-medium text-gray-700">電話:</span>
+            <span className="text-gray-600">{restaurant.phone}</span>
+          </div>
 
-          {/* 営業時間 */}
-          {restaurant.opening_hours && (
-            <div className="flex items-center space-x-2">
-              <span className="text-sm font-medium text-gray-700">営業時間:</span>
-              <span className="text-gray-600">{restaurant.opening_hours}</span>
+          {/* カテゴリレベル表示 */}
+          <div className="flex items-center space-x-2">
+            <span className="text-sm font-medium text-gray-700">レベル:</span>
+            <div className="flex items-center space-x-1">
+              <span className="text-lg">
+                {getCategoryEmoji(restaurant.category).repeat(restaurant.level)}
+              </span>
+              <span className="text-gray-600">({restaurant.level}/5)</span>
             </div>
-          )}
+          </div>
 
-          {/* 価格帯 */}
-          {restaurant.price_range && (
+          {/* Google Mapリンク */}
+          {restaurant.google_map_url && (
             <div className="flex items-center space-x-2">
-              <span className="text-sm font-medium text-gray-700">価格帯:</span>
-              <span className="text-gray-600">{restaurant.price_range}</span>
+              <span className="text-sm font-medium text-gray-700">地図:</span>
+              <a 
+                href={restaurant.google_map_url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800 underline"
+              >
+                Google Mapで開く
+              </a>
             </div>
           )}
         </div>
