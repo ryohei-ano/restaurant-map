@@ -163,9 +163,6 @@ export default function RestaurantResponsiveModal({
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
       <DrawerContent className="retro-modal border-0">
-        <DrawerHeader>
-          <DrawerTitle className="sr-only">{restaurant.name}</DrawerTitle>
-        </DrawerHeader>
         <ContentComponent />
       </DrawerContent>
     </Drawer>
