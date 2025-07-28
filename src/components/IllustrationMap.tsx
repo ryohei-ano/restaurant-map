@@ -73,6 +73,9 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   
+  // localhost判定
+  const [isLocalhost, setIsLocalhost] = useState(false)
+  
   // 編集モードの状態
   const [isEditMode, setIsEditMode] = useState(false)
   const [editingPin, setEditingPin] = useState<MapPin | null>(null)
@@ -96,6 +99,14 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
   // ピンデータの読み込み
   useEffect(() => {
     setPins(mockMapPins)
+  }, [])
+
+  // localhost判定
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname
+      setIsLocalhost(hostname === 'localhost' || hostname === '127.0.0.1')
+    }
   }, [])
 
   // マウス/タッチイベントハンドラー
@@ -227,7 +238,7 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
 
   // 編集モード時のピン追加機能
   const handleMapClick = useCallback((e: React.MouseEvent) => {
-    if (!isDevelopment || !isEditMode || !isAddingPin || isDragging) return
+    if (!isLocalhost || !isEditMode || !isAddingPin || isDragging) return
     
     const image = imageRef.current
     if (!image) return
@@ -262,7 +273,7 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
     setShowPinEditor(true)
     setIsAddingPin(false) // ピン追加後は追加モードを終了
     console.log('新しいピンを追加:', newPin, { clickX: imageX, clickY: imageY, imageRect })
-  }, [isDevelopment, isEditMode, isAddingPin, isDragging, restaurants])
+  }, [isLocalhost, isEditMode, isAddingPin, isDragging, restaurants])
 
   // ピン削除機能
   const handleDeletePin = (pinId: string) => {
@@ -382,11 +393,11 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
           )
         })}
         
-        {/* 開発モード時のコントロール */}
-        {isDevelopment && (
+        {/* localhost時のコントロール */}
+        {isLocalhost && (
           <>
             {/* モード切り替えボタン */}
-            <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
+            <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 items-end">
               <div className="flex gap-2">
                 <button
                   onClick={toggleEditMode}
@@ -423,7 +434,7 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
 
             {/* ピンエディター */}
             {showPinEditor && editingPin && (
-              <div className="absolute top-20 left-4 bg-white rounded-lg shadow-lg p-4 z-30 w-80">
+              <div className="absolute top-20 right-4 bg-white rounded-lg shadow-lg p-4 z-30 w-80">
                 <h3 className="text-lg font-bold mb-4">ピン編集</h3>
                 
                 <div className="space-y-3">

@@ -128,7 +128,8 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background-color: #7B9ECF;
   }
 }
 
@@ -152,4 +153,141 @@
 /* Leafletマップのz-indexを調整 */
 .leaflet-container {
   z-index: 1 !important;
+}
+
+/* ファミコン風8bitスタイル */
+@font-face {
+  font-family: 'BestTen-CRT';
+  src: url('/fonts/BestTen-CRT.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.retro-ui {
+  font-family: 'BestTen-CRT', monospace;
+  background-color: #000000;
+  color: #ffffff;
+  border: 3px solid #ffffff;
+  box-shadow: 
+    inset 0 0 0 1px #000000,
+    inset 3px 3px 0 0 #ffffff,
+    inset -3px -3px 0 0 #808080;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.retro-button {
+  font-family: 'BestTen-CRT', monospace;
+  background-color: #c0c0c0;
+  color: #000000;
+  border: 2px solid #ffffff;
+  box-shadow: 
+    inset 0 0 0 1px #000000,
+    inset 2px 2px 0 0 #ffffff,
+    inset -2px -2px 0 0 #808080;
+  padding: 8px 12px;
+  font-size: 8px;
+  line-height: 1;
+  cursor: pointer;
+  transition: none;
+}
+
+.retro-button:hover {
+  background-color: #ffffff;
+}
+
+.retro-button:active,
+.retro-button.active {
+  background-color: #808080;
+  color: #ffffff;
+  box-shadow: 
+    inset 0 0 0 1px #000000,
+    inset -2px -2px 0 0 #ffffff,
+    inset 2px 2px 0 0 #404040;
+}
+
+.retro-text {
+  font-family: 'BestTen-CRT', monospace;
+  font-size: 8px;
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+.retro-text-small {
+  font-family: 'BestTen-CRT', monospace;
+  font-size: 6px;
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+.retro-modal {
+  font-family: 'BestTen-CRT', monospace;
+  background-color: #000000;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 12px;
+  box-shadow: 
+    inset 0 0 0 2px #000000,
+    inset 2px 2px 0 0 #ffffff,
+    inset -2px -2px 0 0 #ffffff;
+  image-rendering: pixelated;
+}
+
+.retro-modal-content {
+  padding: 16px;
+  background-color: #000000;
+  border-radius: 10px;
+}
+
+.retro-modal-text {
+  font-family: 'BestTen-CRT', monospace;
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.retro-modal-text-small {
+  font-family: 'BestTen-CRT', monospace;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.retro-category-spicy {
+  background-color: #ff0000;
+  color: #ffffff;
+}
+
+.retro-category-oily {
+  background-color: #ffff00;
+  color: #000000;
+}
+
+.retro-category-sweet {
+  background-color: #ff00ff;
+  color: #ffffff;
+}
+
+.retro-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff #000080;
+}
+
+.retro-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.retro-scrollbar::-webkit-scrollbar-track {
+  background: #000080;
+  border: 1px solid #ffffff;
+}
+
+.retro-scrollbar::-webkit-scrollbar-thumb {
+  background: #ffffff;
+  border: 1px solid #000080;
+}
+
+.retro-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #c0c0c0;
 }
