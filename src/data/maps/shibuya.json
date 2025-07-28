@@ -1,0 +1,12 @@
+{
+  "area": "shibuya",
+  "imagePath": "/image/map01.webp",
+  "pins": [
+    {
+      "id": "pin_1",
+      "storeId": "store_1",
+      "x": 50,
+      "y": 30
+    }
+  ]
+}

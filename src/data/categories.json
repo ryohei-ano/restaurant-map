@@ -1,0 +1,20 @@
+[
+  {
+    "category": "spicy",
+    "label": "辛",
+    "color": "#ef4444",
+    "emoji": "🌶️"
+  },
+  {
+    "category": "oily",
+    "label": "油",
+    "color": "#eab308",
+    "emoji": "🍟"
+  },
+  {
+    "category": "sweet",
+    "label": "甘",
+    "color": "#ec4899",
+    "emoji": "🍰"
+  }
+]

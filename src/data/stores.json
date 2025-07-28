@@ -1,0 +1,119 @@
+[
+  {
+    "id": "store_1",
+    "name": "八虎",
+    "area": "shibuya",
+    "category": "spicy",
+    "address": "東京都渋谷区",
+    "yahooStoreId": "10007190453",
+    "googlePlaceId": "ChIJKxjxuaNxGGARfW2k5IbpzUk",
+    "description": "激辛料理専門店。様々な辛さレベルの料理を提供。"
+  },
+  {
+    "id": "store_2",
+    "name": "チャ～ボン多福楼 渋谷店",
+    "area": "shibuya",
+    "category": "spicy",
+    "address": "東京都渋谷区",
+    "description": "四川料理の老舗。本格的な麻婆豆腐と担々麺が人気。"
+  },
+  {
+    "id": "store_3",
+    "name": "琉球チャイニーズ TAMA",
+    "area": "shibuya",
+    "category": "spicy",
+    "address": "東京都渋谷区",
+    "description": "沖縄と中華の融合料理。独特の辛さが楽しめる創作中華。"
+  },
+  {
+    "id": "store_4",
+    "name": "八虎",
+    "area": "shibuya",
+    "category": "spicy",
+    "address": "東京都渋谷区",
+    "description": "激辛料理専門店。様々な辛さレベルの料理を提供。",
+    "yahooStoreId": "10007190453"
+  },
+  {
+    "id": "store_5",
+    "name": "本格中華料理 陳家私菜 渋谷店",
+    "area": "shibuya",
+    "category": "spicy",
+    "address": "東京都渋谷区",
+    "description": "陳家秘伝の四川料理。本場の辛さを再現した本格中華。"
+  },
+  {
+    "id": "store_6",
+    "name": "SHANTi 渋谷店",
+    "area": "shibuya",
+    "category": "spicy",
+    "address": "東京都渋谷区",
+    "description": "インド・ネパール料理店。スパイシーなカレーが自慢。"
+  },
+  {
+    "id": "store_7",
+    "name": "ラーメン凪 BUTAO 渋谷店",
+    "area": "shibuya",
+    "category": "spicy",
+    "address": "東京都渋谷区",
+    "description": "豚骨ベースの激辛ラーメンが人気の老舗ラーメン店。",
+    "yahooStoreId": "ghzt814"
+  },
+  {
+    "id": "store_8",
+    "name": "SAGOEMON末代",
+    "area": "shibuya",
+    "category": "spicy",
+    "address": "東京都渋谷区",
+    "description": "創作和食と辛い料理の融合。独創的な辛味料理を提供。"
+  },
+  {
+    "id": "store_9",
+    "name": "辛味噌 油そば 鬼に金棒",
+    "area": "shibuya",
+    "category": "spicy",
+    "address": "東京都渋谷区",
+    "description": "辛味噌を使った油そばが名物。クセになる辛さが人気。"
+  },
+  {
+    "id": "store_10",
+    "name": "蒙古タンメン中本 渋谷",
+    "area": "shibuya",
+    "category": "spicy",
+    "address": "東京都渋谷区",
+    "description": "激辛ラーメンの代名詞。蒙古タンメンをはじめとした激辛メニューが豊富。",
+    "yahooStoreId": "10007207119"
+  },
+  {
+    "id": "store_11",
+    "name": "ラーメン 辛麺華火",
+    "area": "shibuya",
+    "category": "spicy",
+    "address": "東京都渋谷区",
+    "description": "辛麺専門店。様々な辛さレベルの麺料理を提供。"
+  },
+  {
+    "id": "store_12",
+    "name": "月世界",
+    "area": "shibuya",
+    "category": "spicy",
+    "address": "東京都渋谷区",
+    "description": "老舗の中華料理店。伝統的な四川料理の辛さを楽しめる。"
+  },
+  {
+    "id": "store_13",
+    "name": "カフェ・ド・太田胃酸",
+    "area": "shinjuku",
+    "category": "sweet",
+    "address": "東京都新宿区新宿2-21-1",
+    "description": "こだわりの太田胃散コーヒーと手作り太田胃散ケーキが楽しめるカフェ。"
+  },
+  {
+    "id": "store_14",
+    "name": "太田胃酸寿司",
+    "area": "shinbashi",
+    "category": "oily",
+    "address": "東京都港区新橋4-5-6",
+    "description": "新鮮な太田胃散と職人の技が光る本格江戸前寿司店。ネタは太田胃散のみ。"
+  }
+]
