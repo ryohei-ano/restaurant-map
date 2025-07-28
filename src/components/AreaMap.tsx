@@ -741,7 +741,7 @@ export default function AreaMap({ }: AreaMapProps) {
                   <img
                     src={getCategorySvgPath(restaurant.category)}
                     alt={`${restaurant.category} pin`}
-                    className="w-6 h-7 drop-shadow-lg"
+                    className="w-10 h-12 drop-shadow-lg"
                     style={{
                       filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))'
                     }}
