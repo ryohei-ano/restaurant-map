@@ -1,25 +1,57 @@
 // エリアとカテゴリの型定義
-export type Area = 'shibuya' | 'shinjuku' | 'shinbashi' | 'ikebukuro' | 'kanda'
+export type Area = 'shibuya'
 export type Category = 'spicy' | 'oily' | 'sweet'
 
-// 店舗マスターデータ
-export interface Store {
+// Supabaseのレストランテーブルに対応する型
+export interface Restaurant {
   id: string
   name: string
-  area: Area
-  category: Category
-  address?: string
-  yahooStoreId?: string
-  googlePlaceId?: string
   description?: string
+  latitude?: number
+  longitude?: number
+  address: string
+  category: Category
+  area_id: Area
+  google_place_id?: string
+  phone?: string
+  website_url?: string
+  opening_hours?: string
+  price_range?: string
+  is_active: boolean
+  created_at: string
+  updated_at: string
 }
 
-// 地図ピン情報（座標のみ）
+// Supabaseのエリアテーブルに対応する型
+export interface AreaInfo {
+  id: Area
+  name: string
+  description?: string
+  image_path?: string
+  is_active: boolean
+  created_at: string
+}
+
+// Supabaseの地図ピンテーブルに対応する型
 export interface MapPin {
   id: string
-  storeId: string // 店舗マスターとの紐づけ
-  x: number // 相対位置（0-100%）
-  y: number // 相対位置（0-100%）
+  restaurant_id: string
+  area_id: Area
+  x_position: number // 相対位置（0-100%）
+  y_position: number // 相対位置（0-100%）
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+// Supabaseのリアクションテーブルに対応する型
+export interface Reaction {
+  id: string
+  restaurant_id: string
+  reaction_type: 'like' | 'bad'
+  count: number
+  created_at: string
+  updated_at: string
 }
 
 // 地図データ
@@ -29,40 +61,6 @@ export interface MapData {
   pins: MapPin[]
 }
 
-// Yahoo店舗情報
-export interface YahooStoreInfo {
-  id: string
-  name: string
-  description?: string
-  address: string
-  category: string
-  phone?: string
-  url?: string
-  rating?: number
-  reviewCount?: number
-  openTime?: string
-  holiday?: string
-  access?: string
-  parking?: string
-  budget?: string
-  catchCopy?: string
-}
-
-export interface GooglePlaceInfo {
-  id: string
-  name: string
-  description?: string
-  address: string
-  category: string
-  phone?: string
-  website?: string
-  rating?: number
-  reviewCount?: number
-  openingHours?: string[]
-  priceLevel?: number
-  photos?: string[]
-  url?: string
-}
 
 // カテゴリ表示設定
 export interface CategoryConfig {
@@ -70,4 +68,25 @@ export interface CategoryConfig {
   label: string
   color: string
   emoji: string
+}
+
+// 既存のmap-pins.jsonとの互換性のための型（削除予定）
+export interface LegacyMapPin {
+  id: string
+  x: number
+  y: number
+  title: string
+  category: string
+  description: string
+  address: string
+}
+
+// 既存のStore型（削除予定）
+export interface Store {
+  id: string
+  name: string
+  area: Area
+  category: Category
+  address?: string
+  description?: string
 }

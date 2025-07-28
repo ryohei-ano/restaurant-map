@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { Restaurant, Reaction } from '@/lib/supabase'
+import { Restaurant, Reaction } from '@/types/map'
 import { dummyRestaurants, dummyReactions } from '@/data/dummyData'
 import RestaurantResponsiveModal from './RestaurantResponsiveModal'
 import { createCustomIcon } from './CustomMarkerIcon'
@@ -66,7 +66,9 @@ export default function Map() {
           id: `${Date.now()}`,
           restaurant_id: restaurantId,
           reaction_type: reactionType,
-          count: 1
+          count: 1,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         }
         return [...prevReactions, newReaction]
       }
@@ -98,7 +100,7 @@ export default function Map() {
         {restaurants.map((restaurant) => (
           <Marker
             key={restaurant.id}
-            position={[restaurant.latitude, restaurant.longitude]}
+            position={[restaurant.latitude || 35.6895, restaurant.longitude || 139.6917]}
             icon={createCustomIcon(restaurant.category)}
             eventHandlers={{
               click: () => handleMarkerClick(restaurant)

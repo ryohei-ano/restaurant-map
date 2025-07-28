@@ -1,11 +1,68 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { MapPin, Store } from '@/types/map'
-import { getYahooStoreById } from '@/lib/yahoo-api'
+import { MapPin, Restaurant, Reaction } from '@/types/map'
 import RestaurantResponsiveModal from './RestaurantResponsiveModal'
-import { dummyRestaurants } from '@/data/dummyData'
-import mapPinsData from '@/data/map-pins.json'
+
+// 仮のレストランデータ（後でSupabaseから取得）
+const mockRestaurants: Restaurant[] = [
+  {
+    id: "550e8400-e29b-41d4-a716-446655440001",
+    name: "太田さんラーメン",
+    description: "昔ながらの醤油ラーメンが自慢の老舗店。",
+    latitude: 35.6595,
+    longitude: 139.7006,
+    address: "東京都渋谷区渋谷1-1-1",
+    category: "spicy",
+    area_id: "shibuya",
+    phone: "03-1234-5678",
+    opening_hours: "11:00-22:00",
+    price_range: "¥500-¥1000",
+    is_active: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655440002",
+    name: "カフェ・ド・太田",
+    description: "こだわりのコーヒーと手作りスイーツが楽しめるおしゃれなカフェ。",
+    latitude: 35.6584,
+    longitude: 139.7016,
+    address: "東京都渋谷区渋谷2-21-1",
+    category: "sweet",
+    area_id: "shibuya",
+    phone: "03-2345-6789",
+    opening_hours: "8:00-20:00",
+    price_range: "¥800-¥1500",
+    is_active: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  }
+]
+
+// 仮の地図ピンデータ（後でSupabaseから取得）
+const mockMapPins: MapPin[] = [
+  {
+    id: "pin_1",
+    restaurant_id: "550e8400-e29b-41d4-a716-446655440001",
+    area_id: "shibuya",
+    x_position: 45,
+    y_position: 25,
+    is_active: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: "pin_2",
+    restaurant_id: "550e8400-e29b-41d4-a716-446655440002",
+    area_id: "shibuya",
+    x_position: 55,
+    y_position: 35,
+    is_active: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  }
+]
 
 interface IllustrationMapProps {
   isDevelopment?: boolean
@@ -13,9 +70,9 @@ interface IllustrationMapProps {
 
 export default function IllustrationMap({ isDevelopment = false }: IllustrationMapProps) {
   const [pins, setPins] = useState<MapPin[]>([])
+  const [restaurants] = useState<Restaurant[]>(mockRestaurants)
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [yahooStoreInfo, setYahooStoreInfo] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   
   // 編集モードの状態
@@ -40,7 +97,7 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
 
   // ピンデータの読み込み
   useEffect(() => {
-    setPins(mapPinsData as MapPin[])
+    setPins(mockMapPins)
   }, [])
 
   // マウス/タッチイベントハンドラー
@@ -130,7 +187,7 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
     if (x >= 0 && x <= 100 && y >= 0 && y <= 100) {
       setPins(prev => prev.map(pin => 
         pin.id === draggingPinId 
-          ? { ...pin, x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) }
+          ? { ...pin, x_position: Math.max(0, Math.min(100, x)), y_position: Math.max(0, Math.min(100, y)) }
           : pin
       ))
     }
@@ -158,16 +215,6 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
       setSelectedPin(pin)
       setLoading(true)
       setIsModalOpen(true)
-      
-      // Yahoo店舗情報を取得
-      if (pin.yahooStoreId) {
-        try {
-          const storeInfo = await getYahooStoreById(pin.yahooStoreId)
-          setYahooStoreInfo(storeInfo)
-        } catch (error) {
-          console.error('Yahoo店舗情報の取得に失敗:', error)
-        }
-      }
       
       setLoading(false)
     }
@@ -203,10 +250,13 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
     
     const newPin: MapPin = {
       id: Date.now().toString(),
-      x: Math.max(0, Math.min(100, x)),
-      y: Math.max(0, Math.min(100, y)),
-      title: `新しいピン ${pins.length + 1}`,
-      category: '未分類'
+      restaurant_id: restaurants[0]?.id || '',
+      area_id: 'shibuya',
+      x_position: Math.max(0, Math.min(100, x)),
+      y_position: Math.max(0, Math.min(100, y)),
+      is_active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     }
     
     setPins(prev => [...prev, newPin])
@@ -214,7 +264,7 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
     setShowPinEditor(true)
     setIsAddingPin(false) // ピン追加後は追加モードを終了
     console.log('新しいピンを追加:', newPin, { clickX: imageX, clickY: imageY, imageRect })
-  }, [isDevelopment, isEditMode, isAddingPin, isDragging, pins.length])
+  }, [isDevelopment, isEditMode, isAddingPin, isDragging, restaurants])
 
   // ピン削除機能
   const handleDeletePin = (pinId: string) => {
@@ -240,25 +290,13 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
   const handleCloseModal = () => {
     setIsModalOpen(false)
     setSelectedPin(null)
-    setYahooStoreInfo(null)
   }
 
   // モーダル用のレストランデータ変換
   const getRestaurantData = () => {
     if (!selectedPin) return null
     
-    const storeInfo = yahooStoreInfo || selectedPin
-    
-    return {
-      id: selectedPin.id,
-      name: storeInfo.name || selectedPin.title,
-      description: storeInfo.description || selectedPin.description || '',
-      address: storeInfo.address || selectedPin.address || '',
-      category: storeInfo.category || selectedPin.category || '',
-      latitude: 0, // イラスト地図では使用しない
-      longitude: 0, // イラスト地図では使用しない
-      created_at: new Date().toISOString()
-    }
+    return restaurants.find(r => r.id === selectedPin.restaurant_id) || null
   }
 
   return (
@@ -308,8 +346,10 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
           if (!mapRect) return null
           
           // ピンの絶対位置を計算
-          const pinX = imageRect.left + (imageRect.width * pin.x / 100) - mapRect.left
-          const pinY = imageRect.top + (imageRect.height * pin.y / 100) - mapRect.top
+          const pinX = imageRect.left + (imageRect.width * pin.x_position / 100) - mapRect.left
+          const pinY = imageRect.top + (imageRect.height * pin.y_position / 100) - mapRect.top
+          
+          const restaurant = restaurants.find(r => r.id === pin.restaurant_id)
           
           return (
             <div
@@ -337,7 +377,7 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
                 
                 {/* ホバー時のタイトル表示 */}
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                  {pin.title}
+                  {restaurant?.name || 'レストラン'}
                 </div>
               </div>
             </div>
@@ -390,34 +430,13 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
                 
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium mb-1">タイトル</label>
-                    <input
-                      type="text"
-                      value={editingPin.title}
-                      onChange={(e) => setEditingPin({ ...editingPin, title: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium mb-1">店舗データと紐づけ</label>
+                    <label className="block text-sm font-medium mb-1">レストラン選択</label>
                     <select
-                      value={editingPin.yahooStoreId || ''}
-                      onChange={(e) => {
-                        const selectedRestaurant = dummyRestaurants.find(r => r.id === e.target.value)
-                        setEditingPin({
-                          ...editingPin,
-                          yahooStoreId: e.target.value || undefined,
-                          title: selectedRestaurant ? selectedRestaurant.name : editingPin.title,
-                          category: selectedRestaurant ? selectedRestaurant.category : editingPin.category,
-                          description: selectedRestaurant ? selectedRestaurant.description : editingPin.description,
-                          address: selectedRestaurant ? selectedRestaurant.address : editingPin.address
-                        })
-                      }}
+                      value={editingPin.restaurant_id}
+                      onChange={(e) => setEditingPin({ ...editingPin, restaurant_id: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="">店舗を選択...</option>
-                      {dummyRestaurants.map((restaurant) => (
+                      {restaurants.map((restaurant) => (
                         <option key={restaurant.id} value={restaurant.id}>
                           {restaurant.name} ({restaurant.category})
                         </option>
@@ -425,38 +444,8 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
                     </select>
                   </div>
                   
-                  <div>
-                    <label className="block text-sm font-medium mb-1">カテゴリ</label>
-                    <input
-                      type="text"
-                      value={editingPin.category || ''}
-                      onChange={(e) => setEditingPin({ ...editingPin, category: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium mb-1">説明</label>
-                    <textarea
-                      value={editingPin.description || ''}
-                      onChange={(e) => setEditingPin({ ...editingPin, description: e.target.value })}
-                      rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium mb-1">住所</label>
-                    <input
-                      type="text"
-                      value={editingPin.address || ''}
-                      onChange={(e) => setEditingPin({ ...editingPin, address: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
                   <div className="text-xs text-gray-500">
-                    位置: X={editingPin.x.toFixed(1)}%, Y={editingPin.y.toFixed(1)}%
+                    位置: X={editingPin.x_position.toFixed(1)}%, Y={editingPin.y_position.toFixed(1)}%
                   </div>
                 </div>
                 
@@ -492,8 +481,6 @@ export default function IllustrationMap({ isDevelopment = false }: IllustrationM
       {/* モーダル */}
       <RestaurantResponsiveModal
         restaurant={getRestaurantData()}
-        yahooStoreInfo={yahooStoreInfo}
-        googlePlaceInfo={null}
         reactions={[]} // イラスト地図では反応機能は使用しない
         isOpen={isModalOpen}
         onClose={handleCloseModal}
