@@ -918,14 +918,23 @@ export default function AreaMap({ }: AreaMapProps) {
                   />
                 </div>
                 
-                <a
-                  href="https://www.ohta-isan.co.jp/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block retro-modal-text-small py-3 px-4 hover:bg-gray-800 transition-colors rounded border-2 border-white text-center"
-                >
-                  太田胃散公式サイト
-                </a>
+                <div className="space-y-2">
+                  <a
+                    href="https://www.ohta-isan.co.jp/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block retro-modal-text-small py-3 px-4 hover:bg-gray-800 transition-colors rounded border-2 border-white text-center"
+                  >
+                    太田胃散公式サイト
+                  </a>
+                  
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="block w-full retro-modal-text-small py-3 px-4 hover:bg-gray-800 transition-colors rounded border-2 border-white text-center"
+                  >
+                    最初からはじめる
+                  </button>
+                </div>
               </div>
             </div>
           </div>
