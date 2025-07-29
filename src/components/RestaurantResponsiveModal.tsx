@@ -69,13 +69,15 @@ export default function RestaurantResponsiveModal({
           </h2>
         </div>
         
-        {/* 説明 */}
-        <div className="mb-4">
-          <h3 className="retro-modal-text-small font-semibold mb-2">店舗情報</h3>
-          <p className="retro-modal-text-small leading-relaxed">
-            {restaurant.description}
-          </p>
-        </div>
+        {/* 説明 - descriptionが"TBD"の場合は非表示 */}
+        {restaurant.description && restaurant.description !== "TBD" && (
+          <div className="mb-4">
+            <h3 className="retro-modal-text-small font-semibold mb-2">店舗情報</h3>
+            <p className="retro-modal-text-small leading-relaxed">
+              {restaurant.description}
+            </p>
+          </div>
+        )}
         
         {/* 基本情報 */}
         <div className="space-y-3 mb-4">
