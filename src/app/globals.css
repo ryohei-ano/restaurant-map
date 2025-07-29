@@ -301,3 +301,13 @@
 [data-vaul-drawer][data-vaul-drawer-direction=bottom] {
   border-radius: 16px !important;
 }
+
+/* カーソル点滅アニメーション */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
