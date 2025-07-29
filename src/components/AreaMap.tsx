@@ -84,6 +84,7 @@ export default function AreaMap({ }: AreaMapProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isItemDialogOpen, setIsItemDialogOpen] = useState(false)
+  const [isItemDetailDialogOpen, setIsItemDetailDialogOpen] = useState(false)
   const [reactions] = useState<Reaction[]>([]) // 仮のリアクションデータ
   
   // 編集モードの状態
@@ -635,7 +636,7 @@ export default function AreaMap({ }: AreaMapProps) {
           {/* アイテムボタン */}
           <div className={`retro-modal ${isMobile ? 'max-w-[140px]' : 'max-w-xs'}`}>
             <button 
-              onClick={() => setIsItemDialogOpen(true)}
+              onClick={() => setIsItemDetailDialogOpen(true)}
               className={`retro-modal-content ${isMobile ? 'py-1' : 'py-2'} hover:bg-gray-800 transition-colors cursor-pointer flex flex-col justify-center items-center w-full`}
             >
               <img 
@@ -838,6 +839,41 @@ export default function AreaMap({ }: AreaMapProps) {
               </div>
             )
           })}
+
+          {/* アイテム画像（地図の中央に配置、地図と一緒に移動） */}
+          {(() => {
+            const image = imageRef.current
+            const mapContainer = mapRef.current
+            if (!image || !mapContainer) return null
+            
+            // 画像の実際のサイズを取得
+            const imageRect = image.getBoundingClientRect()
+            
+            // アイテムの位置を地図の中央（50%, 50%）として計算（地図の移動を考慮）
+            const itemX = (imageRect.width * 50 / 100) + mapPosition.x
+            const itemY = (imageRect.height * 50 / 100) + mapPosition.y
+            
+            return (
+              <div
+                className="absolute z-10 cursor-pointer"
+                style={{
+                  left: `${itemX}px`,
+                  top: `${itemY}px`,
+                  transform: 'translate(-50%, -50%)'
+                }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsItemDialogOpen(true)
+                }}
+              >
+                <img
+                  src="/image/item.png"
+                  alt="アイテム"
+                  className="w-12 h-12 drop-shadow-lg hover:scale-110 transition-transform"
+                />
+              </div>
+            )
+          })()}
         </div>
       </div>
       
@@ -896,11 +932,81 @@ export default function AreaMap({ }: AreaMapProps) {
         </div>
       )}
 
-      {/* アイテムダイアログ */}
+      {/* アイテムダイアログ（地図上のアイテムをクリック時） */}
       {isItemDialogOpen && (
         <div 
           className="fixed inset-0 flex items-center justify-center z-50"
           onClick={() => setIsItemDialogOpen(false)}
+        >
+          <div 
+            className="retro-modal max-w-md w-full mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="retro-modal-content">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="retro-modal-text font-bold">？？？</h2>
+                <button
+                  onClick={() => setIsItemDialogOpen(false)}
+                  className="retro-modal-text-small hover:bg-gray-800 px-2 py-1 rounded transition-colors"
+                >
+                  とじる
+                </button>
+              </div>
+              
+              <div className="space-y-6">
+                <div className="text-center">
+                  <img 
+                    src="/image/item.png" 
+                    alt="アイテム" 
+                    className="mx-auto mb-4"
+                    style={{ width: '80px', height: 'auto' }}
+                  />
+                  <div 
+                    className="retro-modal-text text-white leading-relaxed"
+                    style={{ fontSize: '18px' }}
+                  >
+                    渋谷駅のどこかで<br />
+                    アイテムを拾おう
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <div>
+                    <div 
+                      className="retro-modal-text-small text-white font-semibold mb-2"
+                      style={{ fontSize: '14px' }}
+                    >
+                      場所：渋谷駅のどこか
+                    </div>
+                    <div 
+                      className="retro-modal-text-small text-white leading-relaxed"
+                      style={{ fontSize: '12px' }}
+                    >
+                      この地図のどこかに隠されたアイテムを探してみよう。<br />
+                      見つけたら胃の調子も良くなるかも？
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <button
+                    onClick={() => setIsItemDialogOpen(false)}
+                    className="retro-modal-text-small py-3 px-6 hover:bg-gray-800 transition-colors rounded border-2 border-white"
+                  >
+                    探索を続ける
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* アイテム詳細ダイアログ（アイテムをみるボタンをクリック時） */}
+      {isItemDetailDialogOpen && (
+        <div 
+          className="fixed inset-0 flex items-center justify-center z-50"
+          onClick={() => setIsItemDetailDialogOpen(false)}
         >
           <div 
             className="retro-modal max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto"
@@ -910,7 +1016,7 @@ export default function AreaMap({ }: AreaMapProps) {
               <div className="flex justify-between items-center mb-4">
                 <h2 className="retro-modal-text font-bold">ITEM</h2>
                 <button
-                  onClick={() => setIsItemDialogOpen(false)}
+                  onClick={() => setIsItemDetailDialogOpen(false)}
                   className="retro-modal-text-small hover:bg-gray-800 px-2 py-1 rounded transition-colors"
                 >
                   とじる

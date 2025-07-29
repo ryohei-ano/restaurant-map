@@ -16,5 +16,12 @@
     "label": "甘",
     "color": "#ec4899",
     "emoji": "🍰"
+  },
+  {
+    "category": "item",
+    "label": "アイテム",
+    "color": "#8b5cf6",
+    "emoji": "📦",
+    "iconPath": "/image/item.png"
   }
 ]

@@ -7,6 +7,12 @@
       "storeId": "store_1",
       "x": 50,
       "y": 30
+    },
+    {
+      "id": "item_pin_1",
+      "storeId": "item_1",
+      "x": 50,
+      "y": 50
     }
   ]
 }
