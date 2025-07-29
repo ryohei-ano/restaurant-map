@@ -67,6 +67,14 @@ export default function RestaurantResponsiveModal({
           <h2 className="retro-modal-text font-bold">
             {restaurant.name}
           </h2>
+          {/* カテゴリレベル表示 */}
+          <div className="flex items-center space-x-1 mt-2">
+            <span className="retro-modal-text-small font-medium">レベル:</span>
+            <span className="text-lg">
+              {getCategoryEmoji(restaurant.category).repeat(restaurant.level)}
+            </span>
+            <span className="retro-modal-text-small">({restaurant.level}/5)</span>
+          </div>
         </div>
         
         {/* 説明 - descriptionが"TBD"の場合は非表示 */}
@@ -93,17 +101,6 @@ export default function RestaurantResponsiveModal({
           <div className="flex items-center space-x-2">
             <span className="retro-modal-text-small font-medium">電話:</span>
             <span className="retro-modal-text-small">{restaurant.phone}</span>
-          </div>
-
-          {/* カテゴリレベル表示 */}
-          <div className="flex items-center space-x-2">
-            <span className="retro-modal-text-small font-medium">レベル:</span>
-            <div className="flex items-center space-x-1">
-              <span className="text-lg">
-                {getCategoryEmoji(restaurant.category).repeat(restaurant.level)}
-              </span>
-              <span className="retro-modal-text-small">({restaurant.level}/5)</span>
-            </div>
           </div>
 
           {/* Google Mapリンク */}

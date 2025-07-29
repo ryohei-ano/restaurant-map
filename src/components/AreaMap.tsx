@@ -10,19 +10,19 @@ import { useMediaQuery } from '@/hooks/use-media-query'
 const categoriesData: CategoryConfig[] = [
   {
     category: "spicy",
-    label: "辛",
+    label: "からい",
     color: "#ef4444",
     emoji: "🌶️"
   },
   {
     category: "oily",
-    label: "油",
+    label: "あぶら",
     color: "#eab308",
     emoji: "🍟"
   },
   {
     category: "sweet",
-    label: "甘",
+    label: "あまい",
     color: "#ec4899",
     emoji: "🍰"
   }
@@ -82,6 +82,7 @@ export default function AreaMap({ }: AreaMapProps) {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>(['spicy', 'oily', 'sweet'])
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [reactions] = useState<Reaction[]>([]) // 仮のリアクションデータ
   
   // 編集モードの状態
@@ -598,12 +599,12 @@ export default function AreaMap({ }: AreaMapProps) {
                   <button
                     key={categoryConfig.category}
                     onClick={() => toggleCategory(categoryConfig.category)}
-                    className="retro-modal-text-small text-left py-1 px-2 hover:bg-gray-800 transition-colors"
+                    className="retro-modal-text-small text-left py-1 pl-0 pr-2 hover:bg-gray-800 transition-colors"
                   >
                     {selectedCategories.includes(categoryConfig.category) ? (
                       <span>▶{categoryConfig.label}</span>
                     ) : (
-                      <span className="ml-3">{categoryConfig.label}</span>
+                      <span>{categoryConfig.label}</span>
                     )}
                   </button>
                 ))}
@@ -612,10 +613,27 @@ export default function AreaMap({ }: AreaMapProps) {
           </div>
         </div>
 
+        {/* メニューボタン */}
+        <div className="absolute top-4 right-4 z-20">
+          <div className="retro-modal max-w-xs">
+            <button
+              onClick={() => setIsMenuOpen(true)}
+              className="retro-modal-content py-2 px-4 hover:bg-gray-800 transition-colors cursor-pointer flex justify-center items-center"
+            >
+              <img 
+                src="/image/logo.png" 
+                alt="太田胃散ロゴ" 
+                className="max-w-full h-auto"
+                style={{ maxHeight: '40px' }}
+              />
+            </button>
+          </div>
+        </div>
+
         {/* localhost時の編集コントロール */}
         {isLocalhost && (
           <>
-            <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 items-end">
+            <div className="absolute top-16 right-4 z-20 flex flex-col gap-2 items-end">
               <div className="flex gap-2">
                 <button
                   onClick={toggleEditMode}
@@ -807,6 +825,36 @@ export default function AreaMap({ }: AreaMapProps) {
         onClose={handleCloseModal}
         onReactionClick={handleReactionClick}
       />
+
+      {/* メニューダイアログ */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="retro-modal max-w-md w-full mx-4">
+            <div className="retro-modal-content">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="retro-modal-text font-bold">START</h2>
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  className="retro-modal-text-small hover:bg-gray-800 px-2 py-1 rounded transition-colors"
+                >
+                  とじる
+                </button>
+              </div>
+              
+              <div className="space-y-3">
+                <a
+                  href="https://www.ohta-isan.co.jp/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block retro-modal-text-small py-3 px-4 hover:bg-gray-800 transition-colors rounded border-2 border-white"
+                >
+                  太田胃散公式サイト
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
