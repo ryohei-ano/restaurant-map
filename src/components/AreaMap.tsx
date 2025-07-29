@@ -935,7 +935,7 @@ export default function AreaMap({ }: AreaMapProps) {
                       className="retro-modal-text-small text-white font-bold"
                       style={{ fontSize: '14px' }}
                     >
-                      制酸■■■■□
+                      即効■■■■■
                     </div>
                     <div 
                       className="retro-modal-text-small text-white font-bold"
