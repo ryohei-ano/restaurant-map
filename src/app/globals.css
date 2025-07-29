@@ -180,7 +180,7 @@
 .retro-button {
   font-family: 'BestTen-CRT', monospace;
   background-color: #c0c0c0;
-  color: #000000;
+  color: #000000 !important;
   border: 2px solid #ffffff;
   box-shadow: 
     inset 0 0 0 1px #000000,
@@ -200,7 +200,7 @@
 .retro-button:active,
 .retro-button.active {
   background-color: #808080;
-  color: #ffffff;
+  color: #000000 !important;
   box-shadow: 
     inset 0 0 0 1px #000000,
     inset -2px -2px 0 0 #ffffff,
@@ -226,7 +226,7 @@
   background-color: #000000;
   color: #ffffff;
   border: 2px solid #ffffff;
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: 
     inset 0 0 0 2px #000000,
     inset 2px 2px 0 0 #ffffff,
@@ -237,7 +237,7 @@
 .retro-modal-content {
   padding: 16px;
   background-color: #000000;
-  border-radius: 10px;
+  border-radius: 16px;
 }
 
 .retro-modal-text {
@@ -290,4 +290,14 @@
 
 .retro-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #c0c0c0;
+}
+
+/* Drawerの背景色を透明にする */
+[data-vaul-drawer][data-vaul-drawer-direction=bottom]::after {
+  background: transparent !important;
+}
+
+/* Drawerのborder radiusを設定 */
+[data-vaul-drawer][data-vaul-drawer-direction=bottom] {
+  border-radius: 16px !important;
 }

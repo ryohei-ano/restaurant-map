@@ -46,6 +46,7 @@ export default function RestaurantResponsiveModal({
 }: RestaurantResponsiveModalProps) {
   const [isAnimating, setIsAnimating] = useState<'like' | 'bad' | null>(null)
   const [isLiked, setIsLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState(0)
   const isDesktop = useMediaQuery('(min-width: 768px)')
 
   if (!restaurant) return null
@@ -55,6 +56,7 @@ export default function RestaurantResponsiveModal({
   const handleReactionClick = () => {
     setIsAnimating('like')
     setIsLiked(!isLiked)
+    setLikeCount(prev => prev + 1)
     onReactionClick(restaurant.id, 'like')
     setTimeout(() => setIsAnimating(null), 300)
   }
@@ -129,11 +131,11 @@ export default function RestaurantResponsiveModal({
                 isLiked ? 'active' : ''
               } ${isAnimating === 'like' ? 'scale-105' : ''}`}
             >
-              <ThumbsUp className="w-4 h-4" />
-              <span className="retro-modal-text-small font-semibold">
-                {likeReaction?.count || 0}
+              <ThumbsUp className="w-4 h-4 text-black" />
+              <span className="retro-modal-text-small font-semibold text-black">
+                {likeCount + (likeReaction?.count || 0)}
               </span>
-              <span className="retro-modal-text-small">いいね</span>
+              <span className="retro-modal-text-small text-black">いいね</span>
             </button>
           </div>
         </div>
@@ -161,7 +163,7 @@ export default function RestaurantResponsiveModal({
   console.log('モバイル表示: Drawerを使用')
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent className="retro-modal border-0">
+      <DrawerContent className="retro-modal border-0 mx-4 mb-4 bg-transparent">
         <ContentComponent />
       </DrawerContent>
     </Drawer>
