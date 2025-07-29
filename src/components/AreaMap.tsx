@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Area, Category, Restaurant, MapPin, CategoryConfig, Reaction } from '@/types/map'
 import RestaurantResponsiveModal from './RestaurantResponsiveModal'
 import { supabase } from '@/lib/supabase'
+import { useMediaQuery } from '@/hooks/use-media-query'
 
 // カテゴリ設定
 const categoriesData: CategoryConfig[] = [
@@ -74,6 +75,9 @@ export default function AreaMap({ }: AreaMapProps) {
   // localhost判定
   const [isLocalhost, setIsLocalhost] = useState(false)
   
+  // デバイス判定（768px以下をモバイルとする）
+  const isMobile = useMediaQuery('(max-width: 768px)')
+  
   // 状態管理
   const [selectedCategories, setSelectedCategories] = useState<Category[]>(['spicy', 'oily', 'sweet'])
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null)
@@ -106,6 +110,34 @@ export default function AreaMap({ }: AreaMapProps) {
       setIsLocalhost(hostname === 'localhost' || hostname === '127.0.0.1')
     }
   }, [])
+
+  // 地図の初期位置を中央に設定
+  useEffect(() => {
+    const centerMap = () => {
+      const mapContainer = mapRef.current
+      if (!mapContainer) return
+      
+      const containerRect = mapContainer.getBoundingClientRect()
+      
+      // デバイスタイプに応じた拡大率を設定
+      // モバイル: 1.7倍 (70%分のオフセット), PC: 1.2倍 (20%分のオフセット)
+      const scale = isMobile ? 1.7 : 1.2
+      const offsetRatio = (scale - 1) / 2
+      const offsetX = -(containerRect.width * offsetRatio)
+      const offsetY = -(containerRect.height * offsetRatio)
+      
+      setMapPosition({ x: offsetX, y: offsetY })
+      setLastPosition({ x: offsetX, y: offsetY })
+    }
+    
+    // 初期化時とリサイズ時に実行
+    centerMap()
+    window.addEventListener('resize', centerMap)
+    
+    return () => {
+      window.removeEventListener('resize', centerMap)
+    }
+  }, [isMobile])
 
   // Supabaseからデータを取得
   useEffect(() => {
@@ -540,6 +572,10 @@ export default function AreaMap({ }: AreaMapProps) {
 
   const filteredPins = getFilteredPins()
 
+  // デバイスタイプに応じた拡大率を取得
+  const mapScale = isMobile ? 1.7 : 1.2
+  const scalePercentage = `${mapScale * 100}%`
+
   return (
     <>
       <div className="relative w-screen h-screen overflow-hidden bg-gray-100">
@@ -695,8 +731,13 @@ export default function AreaMap({ }: AreaMapProps) {
             ref={imageRef}
             src="/image/map02.png"
             alt="渋谷地図イラスト"
-            className="absolute min-w-full min-h-full object-cover select-none"
+            className="absolute select-none"
             style={{
+              width: scalePercentage,
+              height: scalePercentage,
+              minWidth: scalePercentage,
+              minHeight: scalePercentage,
+              objectFit: 'cover',
               transform: `translate(${mapPosition.x}px, ${mapPosition.y}px)`,
               transition: isDragging ? 'none' : 'transform 0.1s ease-out'
             }}

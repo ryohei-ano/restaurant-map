@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     title: "おいしいを攻略せよ！渋谷うまいものマップ｜太田胃散",
     description: "渋谷エリアのおすすめレストランを地図で探せるアプリ",
   },
-  viewport: "width=device-width, initial-scale=1",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   robots: "index, follow",
 };
 
