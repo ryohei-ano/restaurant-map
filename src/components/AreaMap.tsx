@@ -83,6 +83,7 @@ export default function AreaMap({ }: AreaMapProps) {
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isItemDialogOpen, setIsItemDialogOpen] = useState(false)
   const [reactions] = useState<Reaction[]>([]) // 仮のリアクションデータ
   
   // 編集モードの状態
@@ -584,7 +585,7 @@ export default function AreaMap({ }: AreaMapProps) {
         <div className="fixed top-4 left-4 z-20">
           <div className="retro-modal max-w-xs">
             <button
-              onClick={() => setIsMenuOpen(true)}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="retro-modal-content py-2 px-4 hover:bg-gray-800 transition-colors cursor-pointer flex flex-col justify-center items-center"
             >
               <img 
@@ -598,35 +599,58 @@ export default function AreaMap({ }: AreaMapProps) {
         </div>
 
         {/* コントロールパネル */}
-        <div className="fixed top-4 right-4 z-20 retro-modal max-w-xs">
-          <div className="retro-modal-content">
-            {/* エリア表示 */}
-            <div className="mb-4">
-              <div className="retro-modal-text-small font-semibold mb-2">エリア</div>
-              <div className="retro-modal-text-small">
-                渋谷
+        <div className="fixed top-4 right-4 z-20 flex flex-col gap-4">
+          <div className="retro-modal max-w-xs">
+            <div className="retro-modal-content">
+              {/* エリア表示 */}
+              <div className="mb-4">
+                <div className="retro-modal-text-small font-semibold mb-2">エリア</div>
+                <div className="retro-modal-text-small">
+                  渋谷
+                </div>
+              </div>
+              
+              {/* カテゴリフィルター */}
+              <div>
+                <div className="retro-modal-text-small font-semibold mb-2">カテゴリ</div>
+                <div className="flex flex-col gap-1">
+                  {categories.map((categoryConfig) => (
+                    <button
+                      key={categoryConfig.category}
+                      onClick={() => toggleCategory(categoryConfig.category)}
+                      className="retro-modal-text-small text-left py-1 pl-0 pr-2 hover:bg-gray-800 transition-colors"
+                    >
+                      {selectedCategories.includes(categoryConfig.category) ? (
+                        <span>▶{categoryConfig.label}</span>
+                      ) : (
+                        <span>{categoryConfig.label}</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-            
-            {/* カテゴリフィルター */}
-            <div>
-              <div className="retro-modal-text-small font-semibold mb-2">カテゴリ</div>
-              <div className="flex flex-col gap-1">
-                {categories.map((categoryConfig) => (
-                  <button
-                    key={categoryConfig.category}
-                    onClick={() => toggleCategory(categoryConfig.category)}
-                    className="retro-modal-text-small text-left py-1 pl-0 pr-2 hover:bg-gray-800 transition-colors"
-                  >
-                    {selectedCategories.includes(categoryConfig.category) ? (
-                      <span>▶{categoryConfig.label}</span>
-                    ) : (
-                      <span>{categoryConfig.label}</span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
+          </div>
+
+          {/* アイテムボタン */}
+          <div className="retro-modal max-w-xs">
+            <button 
+              onClick={() => setIsItemDialogOpen(true)}
+              className="retro-modal-content py-2 hover:bg-gray-800 transition-colors cursor-pointer flex flex-col justify-center items-center w-full"
+            >
+              <img 
+                src="/image/item.png" 
+                alt="アイテム" 
+                className="mb-1"
+                style={{ width: '80px', height: 'auto' }}
+              />
+              <span 
+                className="retro-modal-text-small text-white"
+                style={{ fontSize: '12px' }}
+              >
+                アイテムをみる
+              </span>
+            </button>
           </div>
         </div>
 
@@ -828,8 +852,14 @@ export default function AreaMap({ }: AreaMapProps) {
 
       {/* メニューダイアログ */}
       {isMenuOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="retro-modal max-w-md w-full mx-4">
+        <div 
+          className="fixed inset-0 flex items-center justify-center z-50"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <div 
+            className="retro-modal max-w-md w-full mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="retro-modal-content">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="retro-modal-text font-bold">PAUSE</h2>
@@ -859,6 +889,143 @@ export default function AreaMap({ }: AreaMapProps) {
                   className="block retro-modal-text-small py-3 px-4 hover:bg-gray-800 transition-colors rounded border-2 border-white text-center"
                 >
                   太田胃散公式サイト
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* アイテムダイアログ */}
+      {isItemDialogOpen && (
+        <div 
+          className="fixed inset-0 flex items-center justify-center z-50"
+          onClick={() => setIsItemDialogOpen(false)}
+        >
+          <div 
+            className="retro-modal max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="retro-modal-content">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="retro-modal-text font-bold">ITEM</h2>
+                <button
+                  onClick={() => setIsItemDialogOpen(false)}
+                  className="retro-modal-text-small hover:bg-gray-800 px-2 py-1 rounded transition-colors"
+                >
+                  とじる
+                </button>
+              </div>
+              
+              <div className="space-y-6">
+                <div className="flex items-center justify-center gap-6">
+                  <img 
+                    src="/image/item.png" 
+                    alt="太田胃散" 
+                    style={{ width: '120px', height: 'auto' }}
+                  />
+                  <div className="space-y-2">
+                    <div 
+                      className="retro-modal-text-small text-white font-bold"
+                      style={{ fontSize: '14px' }}
+                    >
+                      回復■■■■□
+                    </div>
+                    <div 
+                      className="retro-modal-text-small text-white font-bold"
+                      style={{ fontSize: '14px' }}
+                    >
+                      制酸■■■■□
+                    </div>
+                    <div 
+                      className="retro-modal-text-small text-white font-bold"
+                      style={{ fontSize: '14px' }}
+                    >
+                      爽快■■■□□
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <div 
+                      className="retro-modal-text-small text-white font-bold mb-3"
+                      style={{ fontSize: '16px' }}
+                    >
+                      自然（生薬）の良さを生かした、長年愛用されている総合胃腸薬
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <div 
+                        className="retro-modal-text-small text-white font-semibold mb-1"
+                        style={{ fontSize: '14px' }}
+                      >
+                        特徴1
+                      </div>
+                      <div 
+                        className="retro-modal-text-small text-white leading-relaxed"
+                        style={{ fontSize: '12px' }}
+                      >
+                        7種の健胃生薬が弱った胃を元気にします。
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div 
+                        className="retro-modal-text-small text-white font-semibold mb-1"
+                        style={{ fontSize: '14px' }}
+                      >
+                        特徴2
+                      </div>
+                      <div 
+                        className="retro-modal-text-small text-white leading-relaxed"
+                        style={{ fontSize: '12px' }}
+                      >
+                        4種の制酸剤が胸やけ、胃痛に効きます。
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div 
+                        className="retro-modal-text-small text-white font-semibold mb-1"
+                        style={{ fontSize: '14px' }}
+                      >
+                        特徴3
+                      </div>
+                      <div 
+                        className="retro-modal-text-small text-white leading-relaxed"
+                        style={{ fontSize: '12px' }}
+                      >
+                        独自製法でスッキリ爽やかな服用感。
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div 
+                        className="retro-modal-text-small text-white font-semibold mb-1"
+                        style={{ fontSize: '14px' }}
+                      >
+                        効能・効果
+                      </div>
+                      <div 
+                        className="retro-modal-text-small text-white leading-relaxed"
+                        style={{ fontSize: '12px' }}
+                      >
+                        飲みすぎ、胸やけ、胃部不快感、胃弱、胃もたれ、食べすぎ、胃痛、消化不良、消化促進、食欲不振、胃酸過多、胃部・腹部膨満感、はきけ（胃のむかつき、二日酔・悪酔のむかつき、悪心）、嘔吐、胸つかえ、げっぷ、胃重
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <a
+                  href="https://ohta-isan.co.jp/product/medicine/ohtaisan/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block retro-modal-text-small py-3 px-4 hover:bg-gray-800 transition-colors rounded border-2 border-white text-center"
+                >
+                  太田胃散のサイトでみる
                 </a>
               </div>
             </div>
