@@ -580,8 +580,25 @@ export default function AreaMap({ }: AreaMapProps) {
   return (
     <>
       <div className="relative w-screen h-screen overflow-hidden bg-gray-100">
+        {/* メニューボタン */}
+        <div className="fixed top-4 left-4 z-20">
+          <div className="retro-modal max-w-xs">
+            <button
+              onClick={() => setIsMenuOpen(true)}
+              className="retro-modal-content py-2 px-4 hover:bg-gray-800 transition-colors cursor-pointer flex flex-col justify-center items-center"
+            >
+              <img 
+                src="/image/logo.png" 
+                alt="太田胃散ロゴ" 
+                className="max-w-full h-auto"
+                style={{ maxHeight: '40px' }}
+              />
+            </button>
+          </div>
+        </div>
+
         {/* コントロールパネル */}
-        <div className="fixed top-4 left-4 z-20 retro-modal max-w-xs">
+        <div className="fixed top-4 right-4 z-20 retro-modal max-w-xs">
           <div className="retro-modal-content">
             {/* エリア表示 */}
             <div className="mb-4">
@@ -613,27 +630,10 @@ export default function AreaMap({ }: AreaMapProps) {
           </div>
         </div>
 
-        {/* メニューボタン */}
-        <div className="fixed top-4 right-4 z-20">
-          <div className="retro-modal max-w-xs">
-            <button
-              onClick={() => setIsMenuOpen(true)}
-              className="retro-modal-content py-2 px-4 hover:bg-gray-800 transition-colors cursor-pointer flex flex-col justify-center items-center"
-            >
-              <img 
-                src="/image/logo.png" 
-                alt="太田胃散ロゴ" 
-                className="max-w-full h-auto"
-                style={{ maxHeight: '40px' }}
-              />
-            </button>
-          </div>
-        </div>
-
         {/* localhost時の編集コントロール */}
         {isLocalhost && (
           <>
-            <div className="absolute top-32 right-4 z-20 flex flex-col gap-2 items-end">
+            <div className="absolute top-32 left-4 z-20 flex flex-col gap-2 items-start">
               <div className="flex gap-2">
                 <button
                   onClick={toggleEditMode}
@@ -832,7 +832,7 @@ export default function AreaMap({ }: AreaMapProps) {
           <div className="retro-modal max-w-md w-full mx-4">
             <div className="retro-modal-content">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="retro-modal-text font-bold">START</h2>
+                <h2 className="retro-modal-text font-bold">PAUSE</h2>
                 <button
                   onClick={() => setIsMenuOpen(false)}
                   className="retro-modal-text-small hover:bg-gray-800 px-2 py-1 rounded transition-colors"
