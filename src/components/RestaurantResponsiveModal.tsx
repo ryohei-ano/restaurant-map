@@ -3,15 +3,47 @@
 import { useState } from 'react'
 import { ThumbsUp, MapPin } from 'lucide-react'
 import { Restaurant, Reaction, Category } from '@/types/map'
+import React from 'react'
 
-// カテゴリに対応する絵文字を取得する関数
-const getCategoryEmoji = (category: Category): string => {
-  const emojiMap = {
-    spicy: '🌶️',
-    oily: '🍟',
-    sweet: '🍰'
+// カテゴリに対応する色を取得する関数
+const getCategoryColor = (category: Category): string => {
+  const colorMap = {
+    spicy: '#FF1B1B',
+    oily: '#AAFF00',
+    sweet: '#9535F4'
   }
-  return emojiMap[category] || '🍽️'
+  return colorMap[category] || '#6b7280'
+}
+
+// カテゴリに対応するレベルテキストを取得する関数
+const getCategoryLevelText = (category: Category): string => {
+  const textMap = {
+    spicy: '辛さレベル：',
+    oily: '脂レベル：',
+    sweet: '甘さレベル：'
+  }
+  return textMap[category] || 'レベル：'
+}
+
+// レベル表示用の四角形を生成する関数
+const renderLevelSquares = (level: number, category: Category): React.ReactElement => {
+  const maxLevel = 5
+  const color = getCategoryColor(category)
+  const squares = []
+  
+  for (let i = 0; i < maxLevel; i++) {
+    squares.push(
+      <span
+        key={i}
+        className="inline-block w-3 h-3 border border-white"
+        style={{
+          backgroundColor: i < level ? color : 'transparent'
+        }}
+      />
+    )
+  }
+  
+  return <div className="flex gap-0.5">{squares}</div>
 }
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { Button } from '@/components/ui/button'
@@ -70,11 +102,9 @@ export default function RestaurantResponsiveModal({
             {restaurant.name}
           </h2>
           {/* カテゴリレベル表示 */}
-          <div className="flex items-center space-x-1 mt-2">
-            <span className="retro-modal-text-small font-medium">レベル:</span>
-            <span className="text-lg">
-              {getCategoryEmoji(restaurant.category).repeat(restaurant.level)}
-            </span>
+          <div className="flex items-center space-x-2 mt-2">
+            <span className="retro-modal-text-small font-medium">{getCategoryLevelText(restaurant.category)}</span>
+            {renderLevelSquares(restaurant.level, restaurant.category)}
             <span className="retro-modal-text-small">({restaurant.level}/5)</span>
           </div>
         </div>
