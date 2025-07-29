@@ -123,8 +123,8 @@ export default function AreaMap({ }: AreaMapProps) {
       const containerRect = mapContainer.getBoundingClientRect()
       
       // デバイスタイプに応じた拡大率を設定
-      // モバイル: 1.7倍 (70%分のオフセット), PC: 1.2倍 (20%分のオフセット)
-      const scale = isMobile ? 1.7 : 1.2
+      // モバイル: 2.0倍 (100%分のオフセット), PC: 1.2倍 (20%分のオフセット)
+      const scale = isMobile ? 2.0 : 1.2
       const offsetRatio = (scale - 1) / 2
       const offsetX = -(containerRect.width * offsetRatio)
       const offsetY = -(containerRect.height * offsetRatio)
@@ -576,12 +576,12 @@ export default function AreaMap({ }: AreaMapProps) {
   const filteredPins = getFilteredPins()
 
   // デバイスタイプに応じた拡大率を取得
-  const mapScale = isMobile ? 1.7 : 1.2
+  const mapScale = isMobile ? 2.0 : 1.2
   const scalePercentage = `${mapScale * 100}%`
 
   return (
     <>
-      <div className="relative w-screen h-screen overflow-hidden bg-gray-100">
+      <div className="relative w-screen h-screen bg-gray-100">
         {/* メニューボタン */}
         <div className="fixed top-4 left-4 z-20">
           <div className="retro-modal max-w-xs">
@@ -772,7 +772,7 @@ export default function AreaMap({ }: AreaMapProps) {
           {/* 地図イラスト */}
           <img
             ref={imageRef}
-            src="/image/map02.png"
+            src="/image/da.jpg"
             alt="渋谷地図イラスト"
             className="absolute select-none"
             style={{
