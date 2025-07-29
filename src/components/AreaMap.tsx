@@ -841,12 +841,22 @@ export default function AreaMap({ }: AreaMapProps) {
                 </button>
               </div>
               
-              <div className="space-y-3">
+              <div className="space-y-8">
+                <div className="text-center">
+                  <div 
+                    className="retro-modal-text-small text-white leading-relaxed"
+                    style={{ fontSize: '20px' }}
+                    dangerouslySetInnerHTML={{
+                      __html: '太田胃散　を　もって<br>おいしい　を　攻略せよ！'
+                    }}
+                  />
+                </div>
+                
                 <a
                   href="https://www.ohta-isan.co.jp/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block retro-modal-text-small py-3 px-4 hover:bg-gray-800 transition-colors rounded border-2 border-white"
+                  className="block retro-modal-text-small py-3 px-4 hover:bg-gray-800 transition-colors rounded border-2 border-white text-center"
                 >
                   太田胃散公式サイト
                 </a>
