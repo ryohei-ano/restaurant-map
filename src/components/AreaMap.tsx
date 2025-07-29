@@ -929,7 +929,7 @@ export default function AreaMap({ }: AreaMapProps) {
                       className="retro-modal-text-small text-white font-bold"
                       style={{ fontSize: '14px' }}
                     >
-                      回復■■■■□
+                      回復■■■■■
                     </div>
                     <div 
                       className="retro-modal-text-small text-white font-bold"
@@ -941,7 +941,7 @@ export default function AreaMap({ }: AreaMapProps) {
                       className="retro-modal-text-small text-white font-bold"
                       style={{ fontSize: '14px' }}
                     >
-                      爽快■■■□□
+                      爽快■■■■□
                     </div>
                   </div>
                 </div>
