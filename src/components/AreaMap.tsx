@@ -599,11 +599,11 @@ export default function AreaMap({ }: AreaMapProps) {
         </div>
 
         {/* コントロールパネル */}
-        <div className="fixed top-4 right-4 z-20 flex flex-col gap-4">
-          <div className="retro-modal max-w-xs">
+        <div className={`fixed top-4 right-4 z-20 flex flex-col ${isMobile ? 'gap-2' : 'gap-4'}`}>
+          <div className={`retro-modal ${isMobile ? 'max-w-[140px]' : 'max-w-xs'}`}>
             <div className="retro-modal-content">
               {/* エリア表示 */}
-              <div className="mb-4">
+              <div className={`${isMobile ? 'mb-2' : 'mb-4'}`}>
                 <div className="retro-modal-text-small font-semibold mb-2">エリア</div>
                 <div className="retro-modal-text-small">
                   渋谷
@@ -633,20 +633,20 @@ export default function AreaMap({ }: AreaMapProps) {
           </div>
 
           {/* アイテムボタン */}
-          <div className="retro-modal max-w-xs">
+          <div className={`retro-modal ${isMobile ? 'max-w-[140px]' : 'max-w-xs'}`}>
             <button 
               onClick={() => setIsItemDialogOpen(true)}
-              className="retro-modal-content py-2 hover:bg-gray-800 transition-colors cursor-pointer flex flex-col justify-center items-center w-full"
+              className={`retro-modal-content ${isMobile ? 'py-1' : 'py-2'} hover:bg-gray-800 transition-colors cursor-pointer flex flex-col justify-center items-center w-full`}
             >
               <img 
                 src="/image/item.png" 
                 alt="アイテム" 
                 className="mb-1"
-                style={{ width: '80px', height: 'auto' }}
+                style={{ width: isMobile ? '50px' : '80px', height: 'auto' }}
               />
               <span 
                 className="retro-modal-text-small text-white"
-                style={{ fontSize: '12px' }}
+                style={{ fontSize: isMobile ? '10px' : '12px' }}
               >
                 アイテムをみる
               </span>
